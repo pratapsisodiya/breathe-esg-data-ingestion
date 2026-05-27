@@ -1,0 +1,11 @@
+Django==5.0.6
+djangorestframework==3.15.1
+django-cors-headers==4.3.1
+dj-database-url==2.1.0
+python-decouple==3.8
+whitenoise==6.6.0
+gunicorn==22.0.0
+openpyxl==3.1.2
+# pandas removed — parsers use stdlib csv (Python 3.14 compat)
+# psycopg2 used via DATABASE_URL on Railway; SQLite used locally
+psycopg[binary]
