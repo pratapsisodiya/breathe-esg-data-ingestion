@@ -102,6 +102,6 @@ CORS_ALLOWED_ORIGINS = config(
 ).split(",")
 CORS_ALLOW_CREDENTIALS = True
 
-# On Railway/production, also accept the deployed frontend
+# On Render/production, trust the HTTPS proxy header set by the load balancer
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

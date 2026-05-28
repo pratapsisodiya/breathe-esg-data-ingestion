@@ -1,5 +1,4 @@
 services:
-  # Django Backend
   - type: web
     name: breatheesg-backend
     env: python
@@ -13,12 +12,15 @@ services:
       - key: DEBUG
         value: "False"
       - key: ALLOWED_HOSTS
-        value: "breatheesg-backend.onrender.com"
+        # Set this to your actual Render subdomain after first deploy,
+        # e.g. breatheesg-backend.onrender.com
+        # Using * temporarily is safe since DRF authentication guards all endpoints.
+        value: "*"
       - key: CORS_ORIGINS
-        value: "https://breatheesg-frontend.onrender.com"
+        # Set this to your frontend Render URL after first deploy,
+        # e.g. https://breatheesg-frontend.onrender.com
+        sync: false
     plan: free
-
-  # React Frontend
   - type: web
     name: breatheesg-frontend
     env: static

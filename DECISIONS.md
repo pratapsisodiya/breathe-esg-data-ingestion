@@ -149,8 +149,12 @@ The correct approach is to preserve the actual billing period and let the report
 
 ---
 
-## Deployment: Railway (backend) + Vercel (frontend)
+## Deployment: Render (backend + frontend)
 
-**Decision**: Deploy Django to Railway, React to Vercel.
+**Decision**: Deploy both Django backend and React frontend to Render.com.
 
-**Reasoning**: Railway's free tier supports Django + managed PostgreSQL with GitHub-connected auto-deploy. Vercel handles Vite + React with zero config. Both provide HTTPS and custom domains. The alternative (Render) has cold-start delays on the free tier. Fly.io requires Docker knowledge that adds setup time. Railway was the fastest path to a live URL.
+**Reasoning**: Render supports Django + managed PostgreSQL with GitHub-connected auto-deploy and zero Docker configuration. The static site hosting for Vite + React is also handled natively on Render, making the entire stack deployable from a single `render.yaml` config file in the repository root. This eliminates cross-provider CORS complexity and keeps credentials and deploy configuration in one place.
+
+**Why not Railway or Fly?**: Railway requires a separate Dockerfile or Nixpacks config and its free tier was recently restricted. Fly.io requires Docker and `fly.toml` setup that adds meaningful complexity for a prototype. Render's `render.yaml` blueprint is the fastest path from repository to live URL with a managed PostgreSQL instance included.
+
+**What I'd ask the PM**: "Should we use Render's paid plan to avoid cold-start delays on the free tier? The free tier spins down after 15 minutes of inactivity, which means the first API call after idle will have a ~30s delay — fine for a prototype review, not acceptable for a client demo."

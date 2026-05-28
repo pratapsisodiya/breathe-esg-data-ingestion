@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from decimal import Decimal
 
 from django.db.models import Sum, Count, Q
 from django.utils import timezone as dj_timezone
@@ -6,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.audit.models import AuditLog
+from apps.ingestion.parsers import emission_factors as ef
 from .models import EmissionRecord
 from .serializers import EmissionRecordSerializer, EmissionRecordListSerializer
 
@@ -61,8 +63,6 @@ class EmissionRecordListView(APIView):
         })
 
 
-from decimal import Decimal
-
 def recompute_record_emissions(rec: EmissionRecord):
     """
     Recalculates normalized quantities and co2e emissions when an analyst
@@ -75,7 +75,6 @@ def recompute_record_emissions(rec: EmissionRecord):
     unit_norm = rec.unit_normalized
 
     if rec.source_type == "SAP_FUEL":
-        from apps.ingestion.parsers import emission_factors as ef
         mapped = ef.SAP_UNIT_MAP.get(unit, unit)
         if unit == "G":
             qty_norm = qty / Decimal("1000")
@@ -273,7 +272,7 @@ class BulkApproveView(APIView):
         now = dj_timezone.now()
         qs.update(
             status=EmissionRecord.Status.APPROVED,
-            reviewed_by=request.user,
+            reviewed_by_id=request.user.id,
             reviewed_at=now,
         )
 

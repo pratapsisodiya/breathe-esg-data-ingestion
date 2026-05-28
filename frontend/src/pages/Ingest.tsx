@@ -107,7 +107,7 @@ export default function Ingest() {
       <div>
         <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Ingest Carbon Data</h1>
         <p className="text-slate-500 text-sm mt-1">
-          Upload and normalize emissions reports from SAP exports, utility utility bills, or Concur expenses.
+          Upload and normalize emissions reports from SAP exports, utility bills, or Concur expenses.
         </p>
       </div>
 
