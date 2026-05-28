@@ -105,6 +105,22 @@ class Command(BaseCommand):
         Token.objects.get_or_create(user=user)
         self.stdout.write(f"  [OK] User: {DEMO_USER_EMAIL} / {DEMO_PASSWORD}")
 
+        # Create admin superuser
+        admin_user, admin_created = User.objects.get_or_create(
+            username="admin",
+            defaults={
+                "email": "admin@acme.com",
+                "first_name": "Admin",
+                "last_name": "User",
+                "is_staff": True,
+                "is_superuser": True,
+            },
+        )
+        if admin_created or options["force"]:
+            admin_user.set_password("admin123")
+            admin_user.save()
+        self.stdout.write(f"  [OK] Superuser: admin / admin123")
+
         # Process each data source
         for ds_config in DATA_SOURCES:
             source, _ = DataSource.objects.get_or_create(
