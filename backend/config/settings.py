@@ -97,9 +97,16 @@ REST_FRAMEWORK = {
 }
 
 # CORS — frontend origins
-CORS_ALLOWED_ORIGINS = config(
+raw_origins = config(
     "CORS_ORIGINS", default="http://localhost:5173,http://localhost:3000"
 ).split(",")
+CORS_ALLOWED_ORIGINS = []
+for origin in raw_origins:
+    origin = origin.strip()
+    if origin:
+        if not (origin.startswith("http://") or origin.startswith("https://")):
+            origin = f"https://{origin}"
+        CORS_ALLOWED_ORIGINS.append(origin)
 CORS_ALLOW_CREDENTIALS = True
 
 # On Render/production, trust the HTTPS proxy header set by the load balancer
